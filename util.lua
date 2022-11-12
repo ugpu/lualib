@@ -1,5 +1,7 @@
 ------ some lua common api
-
+------ how use?
+------ only: require "util.lua"
+------ example: util.nowstr()
 local strsub = string.sub
 local strbyte = string.byte
 local strchar = string.char
@@ -332,3 +334,5 @@ function util.reverse_array(list)
     return list
 end
 
+
+return util
