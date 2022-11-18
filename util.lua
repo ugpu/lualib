@@ -137,6 +137,19 @@ function util.uuid_gen(timeGen, rand_id, seqid)
     return generator
 end
 
+function util.isValidIp(ip)
+    if not ip then return false end
+    local sps = futil.split(ip, ".")
+    if #sps ~= 4 then return false end
+    for k, v in pairs(sps) do
+        local val = tonumber(v)
+        if not val or val < 0 or val > 255 then
+            return false
+        end
+    end
+    return true
+end
+
 
 function util.urlencode(s)
     s = string.gsub(s, "([^%w%.%- ])", function(c) return string.format("%%%02X", string.byte(c)) end)
@@ -252,7 +265,7 @@ local phone_mac = {
     [170] = 1,
 }
 --check valid phonenubmer
-function util.validate_phonenumber(num)
+function util.check_valid_phone(num)
     if type(num) ~= "string" then return end
     if utf8.len(num) ~= 11 then return end
     local mac, other = string.match(num, "(%d%d%d)(%d%d%d%d%d%d%d%d)")
