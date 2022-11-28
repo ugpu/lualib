@@ -347,5 +347,26 @@ function util.reverse_array(list)
     return list
 end
 
+--week 1,2,3,4,5,6,7
+function util:get_week_day()
+    local t = os.date("*t").wday - 1
+    if t == 0 then
+        return 7
+    else
+        return t
+    end
+end
+
+function UtilTime:GetTimeZero(time)
+    local t = os.date("*t", time or os.time())
+    return os.time{year = t.year, month = t.month, day = t.day, hour = 0}
+end
+
+require("socket")
+--sleep micro sec:  sleep(n/1000)
+function sleep(n)
+   socket.select(nil, nil, n)
+end
+
 
 return util
