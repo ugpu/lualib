@@ -368,5 +368,14 @@ function sleep(n)
    socket.select(nil, nil, n)
 end
 
+--file_name: full_path
+function write_data_file(file_name, data)
+    local f = io.open(file_name,'a+')
+    if f then
+        f:write(data or "")
+        f:close()
+    end
+end
+
 
 return util
