@@ -357,7 +357,7 @@ function util:get_week_day()
     end
 end
 
-function UtilTime:GetTimeZero(time)
+function util:GetTimeZero(time)
     local t = os.date("*t", time or os.time())
     return os.time{year = t.year, month = t.month, day = t.day, hour = 0}
 end
@@ -369,13 +369,40 @@ function sleep(n)
 end
 
 --file_name: full_path
-function write_data_file(file_name, data)
+function util:write_data_file(file_name, data)
     local f = io.open(file_name,'a+')
     if f then
         f:write(data or "")
         f:close()
     end
 end
+
+--deep copy  table for not base data type 
+--tbl
+--metatbl: if table is class object, suggest metatbl set true
+function util:deep_copy_table(tbl, metatbl)
+    local lock_tbl = {}
+    function _copy(obj)
+        if type(obj) ~= "table" then
+            return obj
+        elseif lock_tbl[obj] then
+            return lock_tbl[obj]
+        end
+
+        local new_tbl = {}
+        lock_tbl[obj] = new_tbl
+        for k, val in pairs(obj) do
+            new_tbl[k] = _copy(val)
+        end
+
+        if metatbl then
+            return setmetatable(new_tbl, getmetatable(obj))
+        end
+        return new_tbl
+    end
+end
+
+
 
 
 return util
