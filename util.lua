@@ -454,5 +454,16 @@ print(encrypted) -- 输出加密后的字符串
 print(decrypted) -- 输出解密后的字符串
 
 
+--suggest use third encrypt , example luacrypto. the xor encrypt is unsafe.
+--example:
+    --[[
+        local crypto = require "crypto"
+        local key = "0123456789abcdef"
+        local data = "Hello, World!"
+        local ciphertext = crypto.encrypt("aes-128-ecb", key, data)
+        --chphertext is bin data. use toHex to hex data.
+        local hex_ciphertext = crypto.toHex(ciphertext)
+    ]]
+
 
 return util
