@@ -451,7 +451,7 @@ end
 -- test code
 local input = "Hello world"
 local key = 0x12 -- key must is char. 0 ~ 255
-local encrypted = util.encrypt(tostring(input), key)
+local encrypted = util:encrypt(tostring(input), key)
 local decrypted = util:decrypt(tostring(encrypted), key)
 print(encrypted) -- 输出加密后的字符串
 print(decrypted) -- 输出解密后的字符串
