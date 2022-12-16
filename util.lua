@@ -408,15 +408,12 @@ end
 
 -- encrypt with xor
 function util:encrypt(input, key)
-    print(input)
-    input="Hello World"
     local inputBytes = {}
     for i = 1, #input do
         inputBytes[i] = string.byte(input, i)
     end
 
     for i = 1, #inputBytes do
-        print(inputBytes[i])
         inputBytes[i] = util:xor(inputBytes[i], key)
     end
 
