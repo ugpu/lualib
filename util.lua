@@ -444,16 +444,6 @@ function util:decrypt(input, key)
   return output
 end
 
-
--- test code
-local input = "Hello world"
-local key = 0x12 -- key must is char. 0 ~ 255
-local encrypted = util:encrypt(tostring(input), key)
-local decrypted = util:decrypt(tostring(encrypted), key)
-print(encrypted) -- 输出加密后的字符串
-print(decrypted) -- 输出解密后的字符串
-
-
 --suggest use third encrypt , example luacrypto. the xor encrypt is unsafe.
 --example:
     --[[
@@ -464,6 +454,28 @@ print(decrypted) -- 输出解密后的字符串
         --chphertext is bin data. use toHex to hex data.
         local hex_ciphertext = crypto.toHex(ciphertext)
     ]]
+
+-- test code
+local input = "Hello world"
+local key = 0x12 -- key must is char. 0 ~ 255
+local encrypted = util:encrypt(tostring(input), key)
+local decrypted = util:decrypt(tostring(encrypted), key)
+print(encrypted) -- 输出加密后的字符串
+print(decrypted) -- 输出解密后的字符串
+
+
+
+-- search dirty word , replace to ***
+function util:filter_word(check_text, filter_word_tbl)
+    local sensitive_words = filter_word_tbl or {"bad", "evil", "hate"}
+    local input_str = next(check_text) and  check_text or "hello world"
+    for i, word in ipairs(sensitive_words) do
+      input_str = string.gsub(input_str, word, "***")
+    end
+    return input_str
+end
+
+
 
 
 return util
