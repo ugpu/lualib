@@ -5,10 +5,8 @@
 local strsub = string.sub
 local strbyte = string.byte
 local strchar = string.char
-local json = require "json"
-local xml = require "LuaXML"
 
-require "tostring"
+
 local util = {}
 
 
@@ -252,7 +250,7 @@ local phone_mac = {
     
     [133]=1,[149]=1,[153]=1,[173]=1,[177]=1,[180]=1,[181]=1, [189]=1,[190]=1,
     [191]=1,[199]=1,
-    -
+    
     [130]=1,[131]=1,[132]=1,[145]=1,[155]=1,[156]=1,[166]=1,[171]=1,[175]=1,
     [176]=1,[185]=1,[186]=1,[196]=1,
    
@@ -362,11 +360,6 @@ function util:GetTimeZero(time)
     return os.time{year = t.year, month = t.month, day = t.day, hour = 0}
 end
 
-require("socket")
---sleep micro sec:  sleep(n/1000)
-function sleep(n)
-   socket.select(nil, nil, n)
-end
 
 --file_name: full_path
 function util:write_data_file(file_name, data)
@@ -402,6 +395,66 @@ function util:deep_copy_table(tbl, metatbl)
     end
 end
 
+
+
+function util:xor(a, b)
+    if _VERSION >= "Lua 5.3" then
+        return (a ~ b)
+    end
+
+    return (bit32.bxor(a, b))
+end
+
+
+-- encrypt with xor
+function util:encrypt(input, key)
+    print(input)
+    input="Hello World"
+    local inputBytes = {}
+    for i = 1, #input do
+        inputBytes[i] = string.byte(input, i)
+    end
+
+    for i = 1, #inputBytes do
+        print(inputBytes[i])
+        inputBytes[i] = util:xor(inputBytes[i], key)
+    end
+
+    local output = ""
+    for i = 1, #inputBytes do
+        output = output .. string.char(inputBytes[i])
+    end
+
+    return output
+end
+
+-- decrypt with xor
+function util:decrypt(input, key)
+  local inputBytes = {}
+  for i = 1, #input do
+    inputBytes[i] = string.byte(input, i)
+  end
+
+  for i = 1, #inputBytes do
+    inputBytes[i] = util:xor(inputBytes[i], key)
+  end
+
+  local output = ""
+  for i = 1, #inputBytes do
+    output = output .. string.char(inputBytes[i])
+  end
+
+  return output
+end
+
+
+-- test code
+local input = "Hello world"
+local key = 0x12 -- key must is char. 0 ~ 255
+local encrypted = util.encrypt(tostring(input), key)
+local decrypted = util:decrypt(tostring(encrypted), key)
+print(encrypted) -- 输出加密后的字符串
+print(decrypted) -- 输出解密后的字符串
 
 
 
