@@ -476,6 +476,18 @@ function util:filter_word(check_text, filter_word_tbl)
 end
 
 
+--use redis example:
+-- first, luarocks install redis-lua
+--[[
+    local redis = require "redis"
+    local client = redis.connect("127.0.0.1", 6379)
+    local result = client:eval("return redis.call('get', KEYS[1])", 1, "mykey")
+    local value = client:get("mykey")
+    client:set("mykey", "new value")
+    cjson.decode(value)
+]]
+
+
 
 
 return util
