@@ -490,4 +490,65 @@ end
 
 
 
+--test code-------
+
+
+--TCP:
+--[[
+
+-- server
+local socket = require "socket"
+
+local server = socket.tcp()
+server:bind("*", 8000)
+server:listen(5)
+
+while true do
+  local client = server:accept()
+  local line = client:receive()
+  client:send(line .. "\n")
+  client:close()
+end
+
+-- client
+local socket = require "socket"
+
+local client = socket.tcp()
+client:connect("localhost", 8000)
+client:send("2022 FIFA Argentina \n")
+local line = client:receive()
+print(line)
+client:close()
+
+
+
+
+--UDP:
+
+-- server
+local socket = require "socket"
+
+local server = socket.udp()
+server:setsockname("*", 8000)
+
+while true do
+  local data, addr = server:receivefrom()
+  server:sendto(data, addr)
+end
+
+-- client
+local socket = require "socket"
+
+local client = socket.udp()
+client:setpeername("localhost", 8000)
+client:send("2022 FIFA Argentina \n")
+local data = client:receive()
+print(data)
+
+]]
+
+--test code------------
+
+
+
 return util
