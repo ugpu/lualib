@@ -512,14 +512,12 @@ end
 
 -- client
 local socket = require "socket"
-
 local client = socket.tcp()
 client:connect("localhost", 8000)
 client:send("2022 FIFA Argentina \n")
 local line = client:receive()
 print(line)
 client:close()
-
 
 
 
@@ -549,6 +547,58 @@ print(data)
 
 --test code------------
 
+
+
+--coroutine
+
+--[[
+
+require "queue.lua"
+
+
+local queue = Queue:new()
+local lookup_fun = {}
+
+
+local func = 
+lookup_fun["hello_world"] = 
+
+local consumer = coroutine.create(function()
+
+  local message = queue:pop()
+  while message do
+    local func_name = message.func_name
+    local func = lookup_func(func_name)
+    -- 调用函数
+    func(message.args)
+
+    -- 继续从队列中读取消息
+    message = queue:pop()
+  end
+end)
+
+coroutine.resume(consumer)
+
+function myCoroutine()
+    for i = 1, 5 do
+        --
+        coroutine.yield()
+    end
+end
+local co = coroutine.create(myCoroutine)
+
+coroutine.resume(co)
+
+coroutine.resume(co)
+
+coroutine.resume(co)
+
+coroutine.resume(co)
+coroutine.resume(co)
+coroutine.resume(co)
+
+
+]]
 
 
 return util
