@@ -262,7 +262,7 @@ local phone_mac = {
  
     [170] = 1,
 }
---check valid phonenubmer
+--check valid phonenubmer, only support zh phone number.
 function util.check_valid_phone(num)
     if type(num) ~= "string" then return end
     if utf8.len(num) ~= 11 then return end
@@ -370,6 +370,19 @@ function util:write_data_file(file_name, data)
     end
 end
 
+
+-- redis data hgetall to table
+function util:redis_hgetall_to_tbl(list)
+    local ret = {}
+    for i = 1, #list, 2 do
+        local key = list[i]
+        local val = list[i + 1]
+        ret[key] = val
+    end
+    return ret
+end
+
+
 --deep copy  table for not base data type 
 --tbl
 --metatbl: if table is class object, suggest metatbl set true
@@ -474,6 +487,7 @@ function util:filter_word(check_text, filter_word_tbl)
     end
     return input_str
 end
+
 
 
 --use redis example:
